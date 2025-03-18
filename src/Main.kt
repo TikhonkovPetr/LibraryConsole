@@ -1,14 +1,11 @@
 fun main() {
+    val mapShops:Map<Int, AbstractShop> = mapOf(1 to ShopBook(),2 to ShopDisk(),3 to ShopNewspaper())
+    val manager = Manager()
     val library = Library()
     val userMenu = UserMenu()
     while (true) {
         try {
-            val choiceList = userMenu.mainMenu()
-            library.showAnyList(choiceList)
-            val choiceId: Int = userMenu.choiceListMenu()
-            library.showSerchItem(choiceList, choiceId)
-            val choiseActivity = userMenu.choiceActivityWithObject()
-            library.activity(choiceList, choiseActivity, choiceId)
+            userMenu.mainMenu(library,manager,mapShops)
         } catch (ex: ArrayStoreException) {
             println(ex.message)
             continue
@@ -17,6 +14,9 @@ fun main() {
             break
         }
     }
+    val testesClass = TestesClass()
+    println("Работа тестого класса Int ${testesClass.getElementList<Int>(listOf(777))}")
+    println("Работа тестого класса String ${testesClass.getElementList<String>(listOf("|полученная строка|"))}")
 }
 
 interface FullInfoInterface {
