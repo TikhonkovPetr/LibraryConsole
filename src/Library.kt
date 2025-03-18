@@ -75,4 +75,11 @@ class Library {
         allObjectLibrary.filter { (_, element) -> (element is T) }
             .forEach { (_, elem) -> elem.briefInformation() }
     }
+    fun addObject(buyObject:ObjectLibrary){
+        buyObject.id = allObjectLibrary.size+1
+        allObjectLibrary[allObjectLibrary.size+1] = buyObject
+    }
+    fun getItemWithId(id:Int):ObjectLibrary{
+        return allObjectLibrary[id]?: throw ArrayStoreException("Нет объекта с таким id")
+    }
 }

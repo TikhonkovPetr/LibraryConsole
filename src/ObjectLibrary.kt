@@ -1,4 +1,4 @@
-abstract class ObjectLibrary(val id: Int, val name: String, var available: Boolean) : FullInfoInterface {
+abstract class ObjectLibrary(var id: Int, val name: String, var available: Boolean) : FullInfoInterface {
     fun briefInformation() {
         println("ID: ${id}| ${this.name} доступна: ${yesOrNot(available)}")
     }
