@@ -1,5 +1,5 @@
-class UserMenu {
-    fun mainMenu(library:Library,manager: Manager, mapShops:Map<Int,AbstractShop>): Int {
+class UserMenu (private val library:Library, private val manager: Manager, private val mapShops:Map<Int,AbstractShop<out ObjectLibrary>>){
+    fun mainMenu(): Int {
         println(
             "Выберите действие:" +
                     "\n1. Показать книги" +
@@ -11,13 +11,13 @@ class UserMenu {
         )
         when(val choiceList=readln().toInt()){
             1,2,3 ->{
-                showElementLibraryAndWork(library,choiceList)
+                showElementLibraryAndWork(choiceList)
             }
             4 ->{
-                menegerActivity(manager,library, mapShops)
+                menegerActivity()
             }
             5 -> {
-                converterMenu(library)
+                converterMenu()
             }
             6 ->{
                 throw Exception("Выход из программы")
@@ -30,7 +30,7 @@ class UserMenu {
         println("Выберите объект из списка по ID")
         return readln().toInt()
     }
-    private fun showElementLibraryAndWork(library: Library,choiceList:Int){
+    private fun showElementLibraryAndWork(choiceList:Int){
         library.showAnyList(choiceList)
         val choiceId: Int = choiceListMenu()
         library.showSerchItem(choiceList, choiceId)
@@ -48,11 +48,16 @@ class UserMenu {
         )
         return readln().toInt()
     }
-    private fun menegerActivity(manager: Manager, library: Library, mapShops:Map<Int,AbstractShop>){
+    private fun menegerActivity(){
         when(val choiceShop = menegerMenu()){
-            1,2,3 ->{
-                manager.buy((mapShops[choiceShop] as AbstractShop),library,enterIdBuyObject(mapShops[choiceShop]))
-                mapShops[choiceShop]?.sellObject(enterIdBuyObject(mapShops[choiceShop]))
+            1->{
+                manager.buy(mapShops[choiceShop],library,enterIdBuyObject(mapShops[choiceShop]))
+            }
+            2->{
+                manager.buy(mapShops[choiceShop],library,enterIdBuyObject(mapShops[choiceShop]))
+            }
+            3 ->{
+                manager.buy(mapShops[choiceShop],library,enterIdBuyObject(mapShops[choiceShop]))
             }
             4 ->{
                 throw ArrayStoreException("Вы вернуслись в основное меню")
@@ -70,12 +75,12 @@ class UserMenu {
         "\n4. Вернуться в меню")
         return readln().toInt()
     }
-    private fun enterIdBuyObject(abstractShop: AbstractShop?):Int{
+    private fun enterIdBuyObject(abstractShop: AbstractShop<*>?):Int{
         println("Выберите объект для покупки по номеру:")
         abstractShop?.showList()
         return readln().toInt()
     }
-    private fun converterMenu(library: Library){
+    private fun converterMenu(){
         library.showAnyList(1)
         library.showAnyList(2)
         val converterToDisk = ConverterToDisk()
